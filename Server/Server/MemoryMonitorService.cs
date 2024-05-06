@@ -1,4 +1,6 @@
 ﻿
+using Server.Controllers;
+
 namespace Server;
 
 public class MemoryMonitorService : BackgroundService
@@ -10,7 +12,8 @@ public class MemoryMonitorService : BackgroundService
 		{
 			await Task.Delay(30000, stoppingToken);
 			Console.WriteLine("Running GC");
-			Console.WriteLine("TotalMemory:" + GC.GetTotalMemory(true));
+			GC.Collect();
+			Console.WriteLine($"TotalMemory: {GC.GetTotalMemory(true)}, Connected: {WebSocketController.ConnectedSocketCount}, Messages: {WebSocketController.MessagesFromConnectedSockets}");
 		}
 	}
 }
